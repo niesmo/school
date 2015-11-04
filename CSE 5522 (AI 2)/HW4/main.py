@@ -85,7 +85,7 @@ def main():
   accuracy = algo.getAccuracy(testingData)
 
   for c in accuracy:
-    print c, accuracy[c]['accuracy'], accuracy[c]['total']
+    print c, 1-accuracy[c]['accuracy'], accuracy[c]['total']
   
 
 
