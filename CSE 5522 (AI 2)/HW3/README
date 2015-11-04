@@ -1,0 +1,25 @@
+Nima Esmaili Mokaram (esmailimokaram.1)
+HW 3
+
+Execution
+---------------------
+This program can be executed by simply running the the python script
+>$ python gameDecision.py
+
+This program requires there to be two different files for training and test respectively called "game_attrdata_train.dat" and "game_attrdata_test.dat"
+
+The output using the provided data is as follow:
+PART A
+---------------------------------
+Accuracy:    0.66
+Error Rate:  0.34
+Average probability assigned to the correct class across the test set 0.717
+
+
+PART B
+---------------------------------
+k = 2 Accuracy: 0.66
+k = 3 Accuracy: 0.54
+k = 4 Accuracy: 0.42
+k = 5 Accuracy: 0.48
+k = 6 Accuracy: 0.48

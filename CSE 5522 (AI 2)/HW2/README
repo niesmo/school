@@ -1,0 +1,33 @@
+Nima Esmaili Mokaram (esmailimokaram.1)
+Homework 2
+Sept 25, 2015
+
+#For the first question, you will need to have the following files in one directory.
+  - k_means.py
+  - lib.py
+  - main.py
+  - testing.json
+  - training.json
+
+You can execute the program by simply running the `main.py` script.
+that file uses the `lib`, `k_means` and the data files to complete different parts of the assignment.
+
+> $ python main.py <DEFAULT_K> <GENERATE_SCATTER_PLOT>
+for example:
+> $ python main.py
+or 
+> $ python main.py 30
+the above command will run the program for the initial k equalling 30.
+or
+> $ python main.py 10 true
+this command will run the program with k=10 and will generate the scatter plot that shows the points from the dataset and the vectors that were found using the k-means algorithm. 
+
+For the first part of question 1, I generated a plot of the data using a scatter plot. This part of the program is using the `matplotlib`.
+the program will output the different probability tables that were asked to be calculated in the assignment.
+
+#The answer to part 4 of the first question:
+as you can see in the output of the program, the error rate of the classification is getting lower as you increase the K used for k-means (the number of clusters).
+This is due to the fact that if you have more clusters, the probability that you will get the right cluster, is significantly higher. this is specially true for when the k used in the program is smaller than the number of labels in the different dataset.
+
+I wrote the answer to the second question and took a picture of it. Those pictures will be in the zipfile submitted in Carmen.
+Please let me know if you have any question regarding any part of the program.

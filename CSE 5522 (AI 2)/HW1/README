@@ -1,0 +1,22 @@
+Nima Esmaili Mokaram
+esmailimokaram.1
+
+Sorry about the quality of the pictures.
+Please let me know, if those dont work for you, and I can bring you my actual papers
+
+All the scripts submitted will run by simply running:
+
+> $ python <program_name> <args>
+
+You have to pass in the name of the file that contains the data (with the same format as the example) to the house_price_and_square_footage...
+
+ANSWER TO QUESTION 4 PART C:
+---------------------------------
+the alpha is basically how large do you want to take steps in each iteration.
+the larger the alpha is, the faster you will converge.
+However, if you pick a significantly larger alpha, you most likely will miss the target, because you took too large of a step.
+At the same time, if you pick a VERY small alpha, it takes a very long time for your program to converge.
+
+
+It was a fun assignment.
+Should have put more time on it.
