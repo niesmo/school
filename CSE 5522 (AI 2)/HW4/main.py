@@ -64,7 +64,7 @@ This is the main function that gets for the EM algorithm
 This function will return the gaussians that the algorithm calculates
 """
 def doExpectationMaximization(data):
-  em = algo.EM(data, 3)
+  em = algo.EM(data, 2)
 
   # initialize the probabilities and the gaussians
   em.initialize()
@@ -109,9 +109,9 @@ def main():
 
   errorRate = 0
   for c in report:
-    errorRate += report[c]['error']
+    errorRate += report[c]['error'] * report[c]['total']
     print c, report[c]['error'], report[c]['total']
-  errorRate /= len(VOWELS)
+  errorRate /= len(testingData)
 
   print "Error Rate: ", errorRate
 
@@ -126,9 +126,10 @@ def main():
 
   errorRate = 0
   for c in report:
-    errorRate += report[c]['error']
+    errorRate += report[c]['error'] * report[c]['total']
     print c, report[c]['error'], report[c]['total']
-  errorRate /= len(VOWELS)
+  errorRate /= len(testingData)
+
   print "Error Rate: ", errorRate
 
 if __name__ == "__main__":
