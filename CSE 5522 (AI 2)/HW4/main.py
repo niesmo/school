@@ -2,8 +2,24 @@
 import sys, os
 import algo.MOG as algo
 
+# for testing
+import numpy as np
+import matplotlib.pyplot as plt
+
 # constants
 VOWELS = ['iy', 'eh', 'ah', 'uw', 'ow', 'ao', 'ih', 'ey', 'ay', 'ax']
+CONST_COLORS = {
+  'iy':'blue',
+  'eh':'purple',
+  'ah':'blue',
+  'uw':'red',
+  'ow':'green',
+  'ao':'green',
+  'ih':'black',
+  'ey':'yellow',
+  'ay':'cyan',
+  'ax':'red'
+}
 
 
 """
@@ -47,20 +63,25 @@ def readData(filename, dictionary=False):
 This is the main function that gets for the EM algorithm
 This function will return the gaussians that the algorithm calculates
 """
-def doEstimationMaximization(data):
-  em = algo.EM(data, VOWELS)
+def doExpectationMaximization(data):
+  em = algo.EM(data, 3)
 
   # initialize the probabilities and the gaussians
   em.initialize()
-
+  it = 1
   while not em.hasConverged():
+    # print "Iteration", it
     # E-STEP
     em.estimate()
 
     # M-STEP
     em.maximize()
 
-  return em.gaussians;
+    # increment it
+    it += 1
+
+  print "Converged in", it , "iterations"
+  return em;
 
 
 
@@ -70,30 +91,45 @@ The main function that is called when this script is ran
 def main():
   # get the training data
   trainingData = readData('train.txt', dictionary=True)
+  trainingDataPlot = readData('train.txt', dictionary=False)
 
   # get the test data
   testingData = readData('test.txt', dictionary=False)
 
 
+
   ''' ------------------- QUESTION 1 PART A ------------------- '''
   print 'Question 1 Part A'
   gaussians = algo.calculateGaussians(trainingData)
-  classProbablity = algo.getClassProbability(trainingData)
+  vowelProbablity = algo.getClassProbability(trainingData)
 
   # using the gaussians and the class probabilities, label the test data
-  algo.test(testingData, gaussians, classProbablity)
-  accuracy = algo.getAccuracy(testingData)
+  algo.test(testingData, gaussians, vowelProbablity)
+  report = algo.getAccuracy(testingData)
 
-  for c in accuracy:
-    print c, 1-accuracy[c]['accuracy'], accuracy[c]['total']
-  
+  errorRate = 0
+  for c in report:
+    errorRate += report[c]['error']
+    print c, report[c]['error'], report[c]['total']
+  errorRate /= len(VOWELS)
+
+  print "Error Rate: ", errorRate
 
 
 
   ''' ------------------- QUESTION 1 PART B ------------------- '''
   print '\nQuestion 1 Part B'
-  doEstimationMaximization(trainingData)
+  em = doExpectationMaximization(trainingData)
 
+  algo.emTest(testingData, em.gaussians, em.classProbability, vowelProbablity)
+  report = algo.getAccuracy(testingData)
+
+  errorRate = 0
+  for c in report:
+    errorRate += report[c]['error']
+    print c, report[c]['error'], report[c]['total']
+  errorRate /= len(VOWELS)
+  print "Error Rate: ", errorRate
 
 if __name__ == "__main__":
   main()
