@@ -63,14 +63,13 @@ def readData(filename, dictionary=False):
 This is the main function that gets for the EM algorithm
 This function will return the gaussians that the algorithm calculates
 """
-def doExpectationMaximization(data):
-  em = algo.EM(data, 2)
+def doExpectationMaximization(data, hiddenVariableCount=2):
+  em = algo.EM(data, hiddenVariableCount)
 
   # initialize the probabilities and the gaussians
   em.initialize()
   it = 1
   while not em.hasConverged():
-    # print "Iteration", it
     # E-STEP
     em.estimate()
 
@@ -83,6 +82,15 @@ def doExpectationMaximization(data):
   print "Converged in", it , "iterations"
   return em;
 
+
+def printReport(report, l):
+  errorRate = 0
+  for c in report:
+    errorRate += report[c]['error'] * report[c]['total']
+    print c, report[c]['error'], report[c]['total']
+  errorRate /= l
+
+  print "Error Rate: ", errorRate
 
 
 """
@@ -107,30 +115,21 @@ def main():
   algo.test(testingData, gaussians, vowelProbablity)
   report = algo.getAccuracy(testingData)
 
-  errorRate = 0
-  for c in report:
-    errorRate += report[c]['error'] * report[c]['total']
-    print c, report[c]['error'], report[c]['total']
-  errorRate /= len(testingData)
-
-  print "Error Rate: ", errorRate
+  printReport(report, len(testingData))
 
 
 
   ''' ------------------- QUESTION 1 PART B ------------------- '''
   print '\nQuestion 1 Part B'
-  em = doExpectationMaximization(trainingData)
+  for hvc in range(2,6):
+    print "\n\nExpectation Maximization With", hvc, "hidden variables"
+    em = doExpectationMaximization(trainingData, hvc)
 
-  algo.emTest(testingData, em.gaussians, em.classProbability, vowelProbablity)
-  report = algo.getAccuracy(testingData)
+    algo.emTest(testingData, em.gaussians, em.classProbability, vowelProbablity)
+    report = algo.getAccuracy(testingData)
 
-  errorRate = 0
-  for c in report:
-    errorRate += report[c]['error'] * report[c]['total']
-    print c, report[c]['error'], report[c]['total']
-  errorRate /= len(testingData)
+    printReport(report, len(testingData));
 
-  print "Error Rate: ", errorRate
 
 if __name__ == "__main__":
   main()

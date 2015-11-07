@@ -1,0 +1,172 @@
+Nima Esmaili Mokaram
+HW 4
+AI 2 -- CSE 5522
+Nov 6, 2015
+
+Instructions
+--------------------------------
+To run the program, you can simply just run the main.py with no arguments
+> $ python main.py
+
+
+Results
+--------------------------------
+Question 1 -> Part A
+
+  Vowel | Error Rate    
+  ----------------------
+    iy  | 0.808510638298
+    eh  | 0.416666666667
+    ah  | 1.0           
+    uw  | 0.702702702703
+    ow  | 0.152173913043
+    ao  | 0.307692307692
+    ih  | 0.48275862069 
+    ey  | 0.261904761905
+    ay  | 0.414634146341
+    ax  | 1.0           
+
+
+  Overal Weighted Error Rate:   0.452
+  Overal Weighted Success Rate: 0.548
+
+  Explanations:
+  Simply using the gaussians was a very good method. the error rate is
+  close to 50%. Looking closer to the data, there are two vowels (AH, AX)
+  that the program got every sample wrong. This I think is due to:
+    1. Lower number of samples that we had from those vowels
+    2. Their location. They are very sparse in areas that other 
+    vowels are very dense. `AH` for example, is mostly around the areas
+    where `AY` is and `AY` has a lot of points and is very dense.
+
+Question 1 -> Part B
+
+  In this part, there is a new hidden layer added between the formants
+  and the Vowels. This layer is not observed, therefore I have used the 
+  EM algorithm to take advantage of the fact that we know there is a layer
+  and how its classes behave (real valued -- so they can be estimated
+  using gaussians).
+
+  I first started by having only two classes for the hidden variable.
+  In this settings, it took the EM 57 iteration to converge using
+  Epsilon equal to 0.001
+
+  Vowel | Error Rate    
+  ----------------------
+    iy  | 0.63829787234
+    eh  | 0.458333333333
+    ah  | 1.0
+    uw  | 0.72972972973
+    ow  | 0.173913043478
+    ao  | 0.269230769231
+    ih  | 0.344827586207
+    ey  | 0.333333333333
+    ay  | 0.365853658537
+    ax  | 0.916666666667
+
+  Overal Weighted Error Rate:  0.425
+  Overal Weighted Success Rate: 0.575
+
+  Explanation:
+  Using two state for the hidden mixture, the program was able to improve
+  3% on overal preformance. One of the other thing that also improved
+  using the hidden layer was the accuracy on `AX`. The program was
+  previously making no correct inference, but the success rate is now up
+  to more than 8%.
+
+  [EXTRA CREDIT]
+  The experiment was repeated while having 3, 4, and 5 classes in
+  the hidden layer. The results are shown below.
+
+
+  * 3 classes for hidden variable:
+
+  The EM converged in 82 iterations.
+
+  Vowel | Error Rate    
+  ----------------------
+    iy  | 0.617021276596
+    eh  | 0.458333333333
+    ah  | 0.944444444444
+    uw  | 0.567567567568
+    ow  | 0.065217391304
+    ao  | 0.346153846154
+    ih  | 0.413793103448
+    ey  | 0.404761904762
+    ay  | 0.378048780488
+    ax  | 0.833333333333
+
+  Overal Weighted Error Rate:  0.398
+  Overal Weighted Success Rate: 0.602
+
+  It's worth noting that using 3 classes improved the accuracy of `AH`.
+
+
+  * 4 classes:
+
+  The EM converged in 310 iterations.
+
+  Vowel | Error Rate    
+  ----------------------
+    iy  | 0.595744680851
+    eh  | 0.375
+    ah  | 0.833333333333
+    uw  | 0.459459459459
+    ow  | 0.076086956521
+    ao  | 0.346153846154
+    ih  | 0.448275862069
+    ey  | 0.357142857143
+    ay  | 0.402439024390
+    ax  | 0.833333333333
+
+  Overal Weighted Error Rate:  0.381
+  Overal Weighted Success Rate: 0.619
+
+  * 5 classes
+
+  The EM converged in 189 iterations.
+  This shows that the number of iterations is not necessarily proportional
+  to the number of classes in the hidden mixture. This could be due to
+  the initial positioning of the gaussians.
+
+  Vowel | Error Rate    
+  ----------------------
+    iy  | 0.531914893617
+    eh  | 0.416666666667
+    ah  | 0.833333333333
+    uw  | 0.432432432432
+    ow  | 0.097826086956
+    ao  | 0.346153846154
+    ih  | 0.448275862069
+    ey  | 0.404761904762
+    ay  | 0.365853658537
+    ax  | 0.75
+
+  Overal Weighted Error Rate:  0.374
+  Overal Weighted Success Rate: 0.626
+
+
+
+Question 2 -> Part A
+  A -> Gaussian
+  B -> Gaussian (a linear gaussian because it is dependant on a real value variable)
+  C -> Probit
+  D -> Probit
+  E -> Gaussian (2D gaussian that takes in values from another gaussian and from a probit)
+
+Question 2 -> Part B
+
+  We would first initialize the hidden mixtures -- in this case B and C
+    initialize their probabilities P(B) P(C) 
+    initialize the distributions for those variables (randomly)
+
+  E-STEP:
+    using the priors and distributions:
+    For every data point:
+      alpha * P(B, C | A, D, E)
+      = alpha * P(B, C, A, D, E)
+      = alpha * P(A)*P(B|A)*P(C|A)*P(D|B,C)*P(E|B,C)
+
+  M-STEP
+    Calculate the new priors by adding all the probabilities for each data point
+    for that class and dividing that by the sum of all the probabilities.
